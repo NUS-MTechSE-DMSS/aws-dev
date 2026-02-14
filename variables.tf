@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "ap-southeast-1"  # sg 
+  default = "ap-southeast-1" # sg 
 }
 
 variable "name" {

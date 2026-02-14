@@ -5,11 +5,11 @@ resource "aws_lb" "app" {
 
   subnets         = data.aws_subnets.default.ids
   security_groups = [aws_security_group.alb.id]
-  
+
   enable_deletion_protection = false
 
-  tags = { 
-    Name = "${var.name}-alb-dev" 
+  tags = {
+    Name = "${var.name}-alb-dev"
   }
 }
 
@@ -22,9 +22,9 @@ resource "aws_lb_target_group" "app" {
 
   health_check {
     # todo enable when ecs done
-    enabled = false
-    path                = var.health_check_path
-    protocol            = "HTTP"
+    enabled  = false
+    path     = var.health_check_path
+    protocol = "HTTP"
 
     matcher             = "200-399"
     interval            = 30
@@ -43,10 +43,10 @@ resource "aws_lb_listener" "http" {
   port              = 80
   protocol          = "HTTP"
 
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.app.arn
-#   }
+  #   default_action {
+  #     type             = "forward"
+  #     target_group_arn = aws_lb_target_group.app.arn
+  #   }
 
   default_action {
     type = "fixed-response"

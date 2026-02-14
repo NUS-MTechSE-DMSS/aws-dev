@@ -1,7 +1,7 @@
 resource "aws_security_group" "alb" {
-  name   = "${var.name}-sg-alb-dev"
+  name        = "${var.name}-sg-alb-dev"
   description = "ALB SG: allow inbound HTTP/HTTPS from anywhere"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     description = "HTTP from anywhere"
@@ -26,8 +26,8 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { 
-    Name = "${var.name}-sg-alb-dev" 
+  tags = {
+    Name = "${var.name}-sg-alb-dev"
   }
 }
 
