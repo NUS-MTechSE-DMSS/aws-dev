@@ -8,7 +8,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket  = "swe5006-nus-g3-tfstate-dev-ap-southeast-1"
+    bucket  = "mtech-swe5006-nus-g3-tfstate-dev-ap-southeast-1"
     key     = "dev/terraform.tfstate"
     region  = "ap-southeast-1"
     encrypt = true
