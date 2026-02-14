@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "public" {
-  bucket        = "${var.name}-public-dev-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}"
+  bucket        = "${var.name}-public-dev-${data.aws_region.current.id}-${data.aws_caller_identity.current.account_id}"
   force_destroy = false
 
   tags = {

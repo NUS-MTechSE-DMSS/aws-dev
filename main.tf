@@ -15,3 +15,4 @@ resource "aws_db_subnet_group" "this" {
 }
 
 data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
