@@ -1,0 +1,29 @@
+variable "aws_region" {
+  type    = string
+  default = "ap-southeast-1"  # sg 
+}
+
+variable "name" {
+  type    = string
+  default = "MTech-SWE5006-NUS-Group3"
+}
+
+variable "postgres_db_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "postgres_db_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "app_port" {
+  type    = number
+  default = 8080
+}
+
+variable "health_check_path" {
+  type    = string
+  default = "/health"
+}
