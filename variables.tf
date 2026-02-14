@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "name" {
   type    = string
-  default = "MTech-SWE5006-NUS-Group3"
+  default = "mtech-swe5006-nus-group3"
 }
 
 variable "postgres_db_username" {
