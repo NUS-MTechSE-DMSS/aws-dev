@@ -7,9 +7,9 @@ ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "$ROOT_DIR"
 
 # only run if there are Terraform files staged or modified
-if ! git diff --cached --name-only | grep -E '\.tf$|\.tfvars$' >/dev/null 2>&1; then
-  exit 0
-fi
+# if ! git diff --cached --name-only | grep -E '\.tf$|\.tfvars$' >/dev/null 2>&1; then
+#   exit 0
+# fi
 
 echo "terraform fmt"
 terraform fmt -recursive

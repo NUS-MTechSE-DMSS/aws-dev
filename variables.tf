@@ -27,3 +27,13 @@ variable "health_check_path" {
   type    = string
   default = "/health"
 }
+
+variable "food_image" {
+  type    = string
+  default = "keiyam/placeholder:3da60e1"
+}
+
+variable "preference_image" {
+  type    = string
+  default = "keiyam/placeholder:3da60e1"
+}
