@@ -30,10 +30,10 @@ variable "health_check_path" {
 
 variable "food_image" {
   type    = string
-  default = "keiyam/placeholder:3da60e1"
+  default = "keiyam/placeholder:85f6ecc"
 }
 
 variable "preference_image" {
   type    = string
-  default = "keiyam/placeholder:3da60e1"
+  default = "keiyam/placeholder:85f6ecc"
 }
