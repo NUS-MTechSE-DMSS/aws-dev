@@ -9,7 +9,7 @@ resource "aws_lb_listener_rule" "food" {
 
   condition {
     path_pattern {
-      values = ["/food/*"]
+      values = ["/food*"]
     }
   }
 }
@@ -25,7 +25,7 @@ resource "aws_lb_listener_rule" "preference" {
 
   condition {
     path_pattern {
-      values = ["/preference/*"]
+      values = ["/preference*"]
     }
   }
 }
@@ -41,7 +41,7 @@ resource "aws_lb_listener_rule" "user" {
 
   condition {
     path_pattern {
-      values = ["/user/*"]
+      values = ["/user*"]
     }
   }
 }
