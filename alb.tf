@@ -22,8 +22,8 @@ resource "aws_lb_listener" "http" {
     type = "fixed-response"
     fixed_response {
       content_type = "text/plain"
-      message_body = "OK"
-      status_code  = "200"
+      message_body = "Bad Request"
+      status_code  = "400"
     }
   }
 }
