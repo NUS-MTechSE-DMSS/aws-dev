@@ -29,3 +29,19 @@ resource "aws_lb_listener_rule" "preference" {
     }
   }
 }
+
+resource "aws_lb_listener_rule" "user" {
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 5
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.user.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/user/*"]
+    }
+  }
+}

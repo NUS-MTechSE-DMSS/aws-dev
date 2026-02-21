@@ -37,3 +37,8 @@ variable "preference_image" {
   type    = string
   default = "keiyam/placeholder:85f6ecc"
 }
+
+variable "user_image" {
+  type    = string
+  default = "keiyam/placeholder:85f6ecc"
+}
