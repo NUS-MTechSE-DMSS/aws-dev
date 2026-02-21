@@ -18,6 +18,12 @@ resource "aws_ecs_service" "food" {
   }
 
   depends_on = [aws_lb_listener.http]
+
+  lifecycle {
+    ignore_changes = [
+      task_definition, # Harness managess
+    ]
+  }
 }
 
 resource "aws_ecs_service" "preference" {
@@ -40,6 +46,12 @@ resource "aws_ecs_service" "preference" {
   }
 
   depends_on = [aws_lb_listener.http]
+
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+    ]
+  }
 }
 
 resource "aws_ecs_service" "user" {
@@ -62,4 +74,10 @@ resource "aws_ecs_service" "user" {
   }
 
   depends_on = [aws_lb_listener.http]
+
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+    ]
+  }
 }
