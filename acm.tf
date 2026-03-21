@@ -1,43 +1,63 @@
 resource "aws_acm_certificate" "cf" {
   provider          = aws.use1
-  count             = var.domain_name != "" ? 1 : 0
   domain_name       = var.domain_name
   validation_method = "DNS"
 
   lifecycle {
     create_before_destroy = true
   }
-}
-
-resource "aws_route53_record" "cf_validation" {
-  for_each = var.domain_name != "" ? {
-    for dvo in aws_acm_certificate.cf[0].domain_validation_options :
-    dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  } : {}
-
-  zone_id = aws_route53_zone.app[0].zone_id
-  name    = each.value.name
-  type    = each.value.type
-  ttl     = 60
-  records = [each.value.record]
-}
-
-resource "aws_acm_certificate_validation" "cf" {
-  provider                = aws.use1
-  count                   = var.domain_name != "" ? 1 : 0
-  certificate_arn         = aws_acm_certificate.cf[0].arn
-  validation_record_fqdns = [for r in aws_route53_record.cf_validation : r.fqdn]
 }
 
 resource "aws_acm_certificate" "alb" {
-  domain_name       = var.domain_name
+  domain_name       = var.origin_domain_name
   validation_method = "DNS"
 
   lifecycle {
     create_before_destroy = true
   }
+}
+
+output "cf_certificate_arn" {
+  value = aws_acm_certificate.cf.arn
+}
+
+output "alb_certificate_arn" {
+  value = aws_acm_certificate.alb.arn
+}
+
+output "cf_validation_records" {
+  value = [
+    for dvo in aws_acm_certificate.cf.domain_validation_options : {
+      domain_name = dvo.domain_name
+      name        = dvo.resource_record_name
+      type        = dvo.resource_record_type
+      value       = dvo.resource_record_value
+    }
+  ]
+}
+
+output "alb_validation_records" {
+  value = [
+    for dvo in aws_acm_certificate.alb.domain_validation_options : {
+      domain_name = dvo.domain_name
+      name        = dvo.resource_record_name
+      type        = dvo.resource_record_type
+      value       = dvo.resource_record_value
+    }
+  ]
+}
+
+resource "aws_acm_certificate_validation" "cf" {
+  provider        = aws.use1
+  certificate_arn = aws_acm_certificate.cf.arn
+  validation_record_fqdns = [
+    for dvo in aws_acm_certificate.cf.domain_validation_options : dvo.resource_record_name
+  ]
+}
+
+resource "aws_acm_certificate_validation" "alb" {
+  certificate_arn = aws_acm_certificate.alb.arn
+  validation_record_fqdns = [
+    for dvo in aws_acm_certificate.alb.domain_validation_options : dvo.resource_record_name
+  ]
 }

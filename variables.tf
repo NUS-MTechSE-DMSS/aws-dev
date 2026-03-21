@@ -18,6 +18,11 @@ variable "domain_name" {
   default = "dev.keiyam.me"
 }
 
+variable "origin_domain_name" {
+  type    = string
+  default = "origin.dev.keiyam.me"
+}
+
 # RDS
 variable "postgres_db_username" {
   type      = string
