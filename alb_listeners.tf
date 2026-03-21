@@ -11,7 +11,7 @@ resource "aws_lb_listener_rule" "food" {
       user_pool_domain    = aws_cognito_user_pool_domain.this.domain
 
       session_cookie_name = "AWSELBAuthSessionCookie"
-      session_timeout = 36000
+      session_timeout     = 36000
 
       on_unauthenticated_request = "allow"
     }
@@ -42,7 +42,7 @@ resource "aws_lb_listener_rule" "preference" {
       user_pool_domain    = aws_cognito_user_pool_domain.this.domain
 
       session_cookie_name = "AWSELBAuthSessionCookie"
-      session_timeout = 36000
+      session_timeout     = 36000
 
       on_unauthenticated_request = "allow"
     }
@@ -73,7 +73,7 @@ resource "aws_lb_listener_rule" "user" {
       user_pool_domain    = aws_cognito_user_pool_domain.this.domain
 
       session_cookie_name = "AWSELBAuthSessionCookie"
-      session_timeout = 36000
+      session_timeout     = 36000
 
       on_unauthenticated_request = "allow"
     }

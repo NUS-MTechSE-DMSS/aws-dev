@@ -34,7 +34,7 @@ resource "aws_acm_certificate_validation" "cf" {
 }
 
 resource "aws_acm_certificate" "alb" {
-  domain_name       = "${var.domain_name}"
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   lifecycle {
