@@ -5,7 +5,6 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 resource "aws_cloudfront_distribution" "app" {
   enabled             = true
   comment             = "${var.name}-${var.env}"
-  default_root_object = ""
 
   web_acl_id = aws_wafv2_web_acl.cf.arn
 

@@ -23,7 +23,7 @@ output "db_subnet_ids" {
 }
 
 output "reserved_subnet_ids" {
-  value = [aws_subnet.reserved_a.id]
+  value = [aws_subnet.reserved_a.id, aws_subnet.reserved_b.id]
 }
 
 output "public_bucket_name" {

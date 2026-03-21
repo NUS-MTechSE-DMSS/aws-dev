@@ -23,8 +23,8 @@ resource "aws_cognito_user_pool_client" "admin" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
-  callback_urls = var.admin_callback_urls
-  logout_urls   = var.admin_logout_urls
+  callback_urls                        = ["https://${var.domain_name}/oauth2/idpresponse"]
+  logout_urls                          = ["https://${var.domain_name}/logout"]
 
   supported_identity_providers = ["COGNITO"]
 
