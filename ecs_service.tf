@@ -1,20 +1,27 @@
 resource "aws_ecs_service" "food" {
-  name            = "${var.name}-food"
+  name            = "${var.name}-food-${var.env}"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.food.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = data.aws_subnets.default.ids
+    subnets          = [aws_subnet.app_a.id, aws_subnet.app_b.id]
     security_groups  = [aws_security_group.ecs_tasks.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.food.arn
     container_name   = "food"
     container_port   = 8080
+  }
+
+  # http://food.${var.name}.internal:8080
+  service_registries {
+    registry_arn   = aws_service_discovery_service.food.arn
+    container_name = "food"
+    container_port = 8080
   }
 
   depends_on = [aws_lb_listener.http]
@@ -27,22 +34,28 @@ resource "aws_ecs_service" "food" {
 }
 
 resource "aws_ecs_service" "preference" {
-  name            = "${var.name}-preference"
+  name            = "${var.name}-preference-${var.env}"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.preference.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = data.aws_subnets.default.ids
+    subnets          = [aws_subnet.app_a.id, aws_subnet.app_b.id]
     security_groups  = [aws_security_group.ecs_tasks.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.preference.arn
     container_name   = "preference"
     container_port   = 8080
+  }
+
+  service_registries {
+    registry_arn   = aws_service_discovery_service.preference.arn
+    container_name = "preference"
+    container_port = 8080
   }
 
   depends_on = [aws_lb_listener.http]
@@ -55,22 +68,28 @@ resource "aws_ecs_service" "preference" {
 }
 
 resource "aws_ecs_service" "user" {
-  name            = "${var.name}-user"
+  name            = "${var.name}-user-${var.env}"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.user.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = data.aws_subnets.default.ids
+    subnets          = [aws_subnet.app_a.id, aws_subnet.app_b.id]
     security_groups  = [aws_security_group.ecs_tasks.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.user.arn
     container_name   = "user"
     container_port   = 8080
+  }
+
+  service_registries {
+    registry_arn   = aws_service_discovery_service.user.arn
+    container_name = "user"
+    container_port = 8080
   }
 
   depends_on = [aws_lb_listener.http]
