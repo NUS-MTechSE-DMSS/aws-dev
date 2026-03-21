@@ -1,5 +1,5 @@
 resource "aws_ecs_task_definition" "food" {
-  family                   = "${var.name}-food"
+  family                   = "${var.name}-food-${var.env}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
@@ -15,7 +15,36 @@ resource "aws_ecs_task_definition" "food" {
         containerPort = 8080
         protocol      = "tcp"
       }]
+
       essential = true
+
+      secrets = [
+        {
+          name      = "DB_USERNAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:username::"
+        },
+        {
+          name      = "DB_PASSWORD"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:password::"
+        },
+        {
+          name      = "DB_HOST"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:host::"
+        },
+        {
+          name      = "DB_PORT"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:port::"
+        },
+        {
+          name      = "DB_NAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:dbname::"
+        },
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:url::"
+        }
+      ]
+
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -29,7 +58,7 @@ resource "aws_ecs_task_definition" "food" {
 }
 
 resource "aws_ecs_task_definition" "preference" {
-  family                   = "${var.name}-preference"
+  family                   = "${var.name}-preference-${var.env}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
@@ -45,7 +74,35 @@ resource "aws_ecs_task_definition" "preference" {
         containerPort = 8080
         protocol      = "tcp"
       }]
+
       essential = true
+      secrets = [
+        {
+          name      = "DB_USERNAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:username::"
+        },
+        {
+          name      = "DB_PASSWORD"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:password::"
+        },
+        {
+          name      = "DB_HOST"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:host::"
+        },
+        {
+          name      = "DB_PORT"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:port::"
+        },
+        {
+          name      = "DB_NAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:dbname::"
+        },
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:url::"
+        }
+      ]
+
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -59,7 +116,7 @@ resource "aws_ecs_task_definition" "preference" {
 }
 
 resource "aws_ecs_task_definition" "user" {
-  family                   = "${var.name}-user"
+  family                   = "${var.name}-user-${var.env}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
@@ -75,7 +132,34 @@ resource "aws_ecs_task_definition" "user" {
         containerPort = 8080
         protocol      = "tcp"
       }]
+
       essential = true
+      secrets = [
+        {
+          name      = "DB_USERNAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:username::"
+        },
+        {
+          name      = "DB_PASSWORD"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:password::"
+        },
+        {
+          name      = "DB_HOST"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:host::"
+        },
+        {
+          name      = "DB_PORT"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:port::"
+        },
+        {
+          name      = "DB_NAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:dbname::"
+        },
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:url::"
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {

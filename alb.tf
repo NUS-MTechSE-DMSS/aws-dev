@@ -1,15 +1,15 @@
 resource "aws_lb" "app" {
-  name               = "${var.name}-alb-dev"
+  name               = "${var.name}-alb-${var.env}"
   load_balancer_type = "application"
   internal           = false
 
-  subnets         = data.aws_subnets.default.ids
+  subnets         = [aws_subnet.public_a.id, aws_subnet.public_b.id]
   security_groups = [aws_security_group.alb.id]
 
   enable_deletion_protection = false
 
   tags = {
-    Name = "${var.name}-alb-dev"
+    Name = "${var.name}-alb-${var.env}"
   }
 }
 

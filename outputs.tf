@@ -1,9 +1,29 @@
+# output "vpc_id" {
+#   value = data.aws_vpc.default.id
+# }
+
+# output "subnet_id" {
+#   value = data.aws_subnets.default.ids
+# }
+
 output "vpc_id" {
-  value = data.aws_vpc.default.id
+  value = aws_vpc.this.id
 }
 
-output "subnet_id" {
-  value = data.aws_subnets.default.ids
+output "public_subnet_ids" {
+  value = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+}
+
+output "app_subnet_ids" {
+  value = [aws_subnet.app_a.id, aws_subnet.app_b.id]
+}
+
+output "db_subnet_ids" {
+  value = [aws_subnet.db_a.id, aws_subnet.db_b.id]
+}
+
+output "reserved_subnet_ids" {
+  value = [aws_subnet.reserved_a.id]
 }
 
 output "public_bucket_name" {
