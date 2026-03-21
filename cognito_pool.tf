@@ -1,5 +1,3 @@
-
-
 resource "aws_cognito_user_pool" "this" {
   name = "${var.name}-user-pool-${var.env}"
 

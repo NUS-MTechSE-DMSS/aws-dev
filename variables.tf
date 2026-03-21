@@ -63,12 +63,12 @@ variable "user_image" {
 # Cognito
 variable "admin_callback_urls" {
   type    = list(string)
-  default = ["https://${var.env}.${var.domain_name}/callback"]
+  default = ["https://dev.keiyam.me/callback"]
 }
 
 variable "admin_logout_urls" {
   type    = list(string)
-  default = ["https://${var.env}.${var.domain_name}/logout"]
+  default = ["https://dev.keiyam.me/logout"]
 }
 
 variable "cognito_domain_prefix" {
