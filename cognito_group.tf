@@ -23,8 +23,8 @@ resource "aws_cognito_user_pool_client" "admin" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
-  callback_urls = var.admin_callback_urls
-  logout_urls   = var.admin_logout_urls
+  callback_urls = var.cognito_callback_urls
+  logout_urls   = var.cognito_logout_urls
 
   supported_identity_providers = ["COGNITO"]
 
@@ -76,5 +76,5 @@ output "cognito_app_user_group_name" {
 }
 
 output "cognito_admin_login_url" {
-  value = "https://${aws_cognito_user_pool_domain.this.domain}.auth.${data.aws_region.current.id}.amazoncognito.com/login?client_id=${aws_cognito_user_pool_client.admin.id}&response_type=code&scope=openid+email+profile&redirect_uri=${urlencode(var.admin_callback_urls[0])}"
+  value = "https://${aws_cognito_user_pool_domain.this.domain}.auth.${data.aws_region.current.id}.amazoncognito.com/login?client_id=${aws_cognito_user_pool_client.admin.id}&response_type=code&scope=openid+email+profile&redirect_uri=${urlencode(var.cognito_callback_urls[0])}"
 }

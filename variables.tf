@@ -15,7 +15,7 @@ variable "name" {
 
 variable "domain_name" {
   type    = string
-  default = ""
+  default = "dev.keiyam.me"
 }
 
 # RDS
@@ -61,12 +61,12 @@ variable "user_image" {
 }
 
 # Cognito
-variable "admin_callback_urls" {
+variable "cognito_callback_urls" {
   type    = list(string)
-  default = ["https://dev.keiyam.me/callback"]
+  default = ["https://dev.keiyam.me/oauth2/idpresponse"]
 }
 
-variable "admin_logout_urls" {
+variable "cognito_logout_urls" {
   type    = list(string)
   default = ["https://dev.keiyam.me/logout"]
 }
