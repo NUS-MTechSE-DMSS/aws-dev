@@ -25,14 +25,14 @@ resource "aws_cloudfront_distribution" "app" {
   }
 
   default_cache_behavior {
-    target_origin_id       = "alb-${aws_lb.app.name}"
+    target_origin_id       = "alb-origin"
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
 
     allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
     cached_methods  = ["GET", "HEAD"]
 
-    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   }
 

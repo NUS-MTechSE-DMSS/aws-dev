@@ -21,11 +21,9 @@ resource "aws_ecs_service" "food" {
   service_registries {
     registry_arn   = aws_service_discovery_service.food.arn
     container_name = "food"
-    container_port = 8080
   }
 
-  depends_on = [aws_lb_listener.http]
-
+  depends_on = [aws_lb_listener_rule.food]
   lifecycle {
     ignore_changes = [
       task_definition, # Harness managess
@@ -55,11 +53,9 @@ resource "aws_ecs_service" "preference" {
   service_registries {
     registry_arn   = aws_service_discovery_service.preference.arn
     container_name = "preference"
-    container_port = 8080
   }
 
-  depends_on = [aws_lb_listener.http]
-
+  depends_on = [aws_lb_listener_rule.preference]
   lifecycle {
     ignore_changes = [
       task_definition,
@@ -89,11 +85,9 @@ resource "aws_ecs_service" "user" {
   service_registries {
     registry_arn   = aws_service_discovery_service.user.arn
     container_name = "user"
-    container_port = 8080
   }
 
-  depends_on = [aws_lb_listener.http]
-
+  depends_on = [aws_lb_listener_rule.user]
   lifecycle {
     ignore_changes = [
       task_definition,

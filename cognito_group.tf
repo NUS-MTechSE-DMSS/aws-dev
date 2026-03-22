@@ -17,7 +17,7 @@ resource "aws_cognito_user_pool_client" "admin" {
   name         = "${var.name}-admin-client-${var.env}"
   user_pool_id = aws_cognito_user_pool.this.id
 
-  generate_secret = false
+  generate_secret = true
 
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"]

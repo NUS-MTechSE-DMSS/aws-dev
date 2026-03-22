@@ -48,11 +48,11 @@ resource "aws_subnet" "app_b" {
 
 # db
 resource "aws_db_subnet_group" "this" {
-  name       = "${var.name}-dbsubnet-${var.env}"
+  name       = "${var.name}-dbsubnet-${var.env}-v2"
   subnet_ids = [aws_subnet.db_a.id, aws_subnet.db_b.id]
 
   tags = {
-    Name = "${var.name}-dbsubnet-${var.env}"
+    Name = "${var.name}-dbsubnet-${var.env}-v2"
   }
 }
 
