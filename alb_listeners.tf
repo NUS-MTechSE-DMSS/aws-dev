@@ -7,7 +7,7 @@ resource "aws_lb_listener_rule" "food" {
 
     authenticate_cognito {
       user_pool_arn       = aws_cognito_user_pool.this.arn
-      user_pool_client_id = aws_cognito_user_pool_client.this.id
+      user_pool_client_id = aws_cognito_user_pool_client.web.id
       user_pool_domain    = aws_cognito_user_pool_domain.this.domain
 
       session_cookie_name = "AWSELBAuthSessionCookie"
@@ -38,7 +38,7 @@ resource "aws_lb_listener_rule" "preference" {
 
     authenticate_cognito {
       user_pool_arn       = aws_cognito_user_pool.this.arn
-      user_pool_client_id = aws_cognito_user_pool_client.this.id
+      user_pool_client_id = aws_cognito_user_pool_client.web.id
       user_pool_domain    = aws_cognito_user_pool_domain.this.domain
 
       session_cookie_name = "AWSELBAuthSessionCookie"
@@ -69,7 +69,7 @@ resource "aws_lb_listener_rule" "user" {
 
     authenticate_cognito {
       user_pool_arn       = aws_cognito_user_pool.this.arn
-      user_pool_client_id = aws_cognito_user_pool_client.this.id
+      user_pool_client_id = aws_cognito_user_pool_client.web.id
       user_pool_domain    = aws_cognito_user_pool_domain.this.domain
 
       session_cookie_name = "AWSELBAuthSessionCookie"

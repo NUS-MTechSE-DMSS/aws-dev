@@ -2,6 +2,10 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
+data "aws_cloudfront_origin_request_policy" "all_viewer" {
+  name = "Managed-AllViewer"
+}
+
 resource "aws_cloudfront_distribution" "app" {
   enabled = true
   comment = "${var.name}-${var.env}"
@@ -9,8 +13,8 @@ resource "aws_cloudfront_distribution" "app" {
   web_acl_id = aws_wafv2_web_acl.cf.arn
 
   origin {
-    domain_name = aws_lb.app.dns_name
-    origin_id   = "alb-${aws_lb.app.name}"
+    domain_name = var.origin_domain_name
+    origin_id   = "alb-origin"
 
     custom_origin_config {
       http_port              = 80
@@ -21,14 +25,15 @@ resource "aws_cloudfront_distribution" "app" {
   }
 
   default_cache_behavior {
-    target_origin_id       = "alb-${aws_lb.app.name}"
+    target_origin_id       = "alb-origin"
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
 
     allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
     cached_methods  = ["GET", "HEAD"]
 
-    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   }
 
   restrictions {
@@ -39,7 +44,7 @@ resource "aws_cloudfront_distribution" "app" {
 
   viewer_certificate {
     cloudfront_default_certificate = var.domain_name == ""
-    acm_certificate_arn            = var.domain_name != "" ? aws_acm_certificate_validation.cf[0].certificate_arn : null
+    acm_certificate_arn            = var.domain_name != "" ? aws_acm_certificate_validation.cf.certificate_arn : null
     ssl_support_method             = var.domain_name != "" ? "sni-only" : null
     minimum_protocol_version       = var.domain_name != "" ? "TLSv1.2_2021" : "TLSv1"
   }
