@@ -53,17 +53,17 @@ resource "aws_cloudfront_distribution" "app" {
     cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
   }
 
-#   default_cache_behavior {
-#     target_origin_id       = "alb-origin"
-#     viewer_protocol_policy = "redirect-to-https"
-#     compress               = true
+  #   default_cache_behavior {
+  #     target_origin_id       = "alb-origin"
+  #     viewer_protocol_policy = "redirect-to-https"
+  #     compress               = true
 
-#     allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-#     cached_methods  = ["GET", "HEAD"]
+  #     allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+  #     cached_methods  = ["GET", "HEAD"]
 
-#     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
-#     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
-#   }
+  #     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
+  #     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
+  #   }
 
   ordered_cache_behavior {
     path_pattern           = "/food*"

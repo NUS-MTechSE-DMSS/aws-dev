@@ -1,6 +1,6 @@
 resource "aws_cognito_user_pool" "this" {
-  name = "${var.name}-user-pool-${var.env}"
-  username_attributes      = ["email"]
+  name                = "${var.name}-user-pool-${var.env}"
+  username_attributes = ["email"]
 
   password_policy {
     minimum_length    = 8
@@ -32,8 +32,8 @@ resource "aws_cognito_user_pool" "this" {
 }
 
 resource "aws_cognito_user_pool_domain" "this" {
-  domain                = "${var.cognito_domain_prefix}-${var.env}"
-  user_pool_id          = aws_cognito_user_pool.this.id
+  domain       = "${var.cognito_domain_prefix}-${var.env}"
+  user_pool_id = aws_cognito_user_pool.this.id
 }
 
 output "cognito_user_pool_id" {
