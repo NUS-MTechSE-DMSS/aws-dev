@@ -5,7 +5,7 @@ on:
         branches:
             - main
     workflow_dispatch:
-        
+
 permissions:
     contents: read
     id-token: write
@@ -20,6 +20,8 @@ jobs:
     env:
       TF_VAR_postgres_db_username: ${{ secrets.TF_VAR_POSTGRES_DB_USERNAME }}
       TF_VAR_postgres_db_password: ${{ secrets.TF_VAR_POSTGRES_DB_PASSWORD }}
+      TF_VAR_aws_iam_access_key_id: ${{ secrets.TF_VAR_AWS_IAM_ACCESS_KEY_ID_JL }}
+      TF_VAR_aws_iam_access_key_secret: ${{ secrets.TF_VAR_AWS_IAM_ACCESS_KEY_SECRET_JL }}
 
     steps:
       - name: Checkout

@@ -23,6 +23,16 @@ variable "origin_domain_name" {
   default = "origin.dev.keiyam.me"
 }
 
+variable "aws_iam_access_key_id" {
+  type      = string
+  sensitive = true
+}
+
+variable "aws_iam_access_key_secret" {
+  type      = string
+  sensitive = true
+}
+
 # RDS
 variable "postgres_db_username" {
   type      = string
