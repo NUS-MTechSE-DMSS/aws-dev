@@ -37,3 +37,20 @@ resource "aws_iam_role_policy" "ecs_task_read_postgres_secret" {
     ]
   })
 }
+
+resource "aws_secretsmanager_secret" "aws_keys" {
+  name = "${var.name}/aws-access-keys/${var.env}"
+}
+
+resource "aws_secretsmanager_secret_version" "aws_keys" {
+  secret_id = aws_secretsmanager_secret.aws_keys.id
+
+  secret_string = jsonencode({
+    aws_access_key_id     = var.aws_iam_access_key_id
+    aws_secret_access_key = var.aws_iam_access_key_secret
+  })
+}
+
+output "aws_keys_secret_arn" {
+  value = aws_secretsmanager_secret.aws_keys.arn
+}

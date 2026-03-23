@@ -8,7 +8,7 @@ resource "aws_lb_target_group" "food" {
   health_check {
     path     = "/food/actuator/health"
     matcher  = "200-399"
-    interval = 30
+    interval = 300
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_lb_target_group" "preference" {
   health_check {
     path     = "/preference/actuator/health"
     matcher  = "200-399"
-    interval = 30
+    interval = 300
   }
 }
 
@@ -36,6 +36,6 @@ resource "aws_lb_target_group" "user" {
   health_check {
     path     = "/user/actuator/health"
     matcher  = "200-399"
-    interval = 30
+    interval = 300
   }
 }
