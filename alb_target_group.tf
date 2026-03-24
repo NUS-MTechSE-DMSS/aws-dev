@@ -6,8 +6,8 @@ resource "aws_lb_target_group" "food" {
   vpc_id      = aws_vpc.this.id
 
   health_check {
-    path     = "/food/actuator/health"
-    matcher  = "200-399"
+    path                = "/food/actuator/health"
+    matcher             = "200-399"
     healthy_threshold   = 2
     unhealthy_threshold = 5
   }
@@ -21,8 +21,8 @@ resource "aws_lb_target_group" "preference" {
   vpc_id      = aws_vpc.this.id
 
   health_check {
-    path     = "/preference/actuator/health"
-    matcher  = "200-399"
+    path                = "/preference/actuator/health"
+    matcher             = "200-399"
     healthy_threshold   = 2
     unhealthy_threshold = 5
   }
@@ -36,8 +36,8 @@ resource "aws_lb_target_group" "user" {
   vpc_id      = aws_vpc.this.id
 
   health_check {
-    path     = "/user/actuator/health"
-    matcher  = "200-399"
+    path                = "/user/actuator/health"
+    matcher             = "200-399"
     healthy_threshold   = 2
     unhealthy_threshold = 5
   }
