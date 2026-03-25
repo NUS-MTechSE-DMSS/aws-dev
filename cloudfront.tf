@@ -19,10 +19,10 @@ resource "aws_cloudfront_origin_access_control" "public_s3" {
 }
 
 resource "aws_cloudfront_distribution" "app" {
-  enabled = true
-  comment = "${var.name}-${var.env}"
-
-  web_acl_id = aws_wafv2_web_acl.cf.arn
+  enabled             = true
+  comment             = "${var.name}-${var.env}"
+  default_root_object = "index.html"
+  web_acl_id          = aws_wafv2_web_acl.cf.arn
 
   origin {
     domain_name              = aws_s3_bucket.public.bucket_regional_domain_name
