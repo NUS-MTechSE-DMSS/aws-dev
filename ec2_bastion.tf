@@ -1,13 +1,3 @@
-data "aws_ami" "amazon_linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-*-x86_64"]
-  }
-}
-
 variable "bastion_allowed_cidr" {
   type        = string
   description = "Your IP in CIDR form, e.g. 1.2.3.4/32"
@@ -40,7 +30,7 @@ resource "aws_iam_instance_profile" "bastion" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.amazon_linux.id
+  ami                         = "ami-09a30eb97553efae6"
   instance_type               = "t3.micro"
   subnet_id                   = aws_subnet.public_a.id
   vpc_security_group_ids      = [aws_security_group.bastion.id]
