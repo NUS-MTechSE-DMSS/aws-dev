@@ -104,6 +104,13 @@ resource "aws_cloudfront_distribution" "app" {
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   }
 
+  custom_error_response {
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"

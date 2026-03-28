@@ -90,3 +90,8 @@ variable "cognito_domain_prefix" {
   type    = string
   default = "swe5006-nus-g3"
 }
+
+variable "cloudfront_invalidation_lambda_arn" {
+  type    = string
+  default = "arn:aws:lambda:ap-southeast-1:282793424364:function:cloudfront-invalidation"
+}

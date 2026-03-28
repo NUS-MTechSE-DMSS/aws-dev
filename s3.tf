@@ -54,6 +54,15 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "public" {
   }
 }
 
+resource "aws_s3_bucket_notification" "public_index_html_upload" {
+  bucket = aws_s3_bucket.public.id
+
+  lambda_function {
+    lambda_function_arn = var.cloudfront_invalidation_lambda_arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_suffix       = "index.html"
+  }
+}
 
 resource "aws_s3_bucket" "admin" {
   bucket        = "${var.name}-admin-${var.env}-${data.aws_region.current.id}-${data.aws_caller_identity.current.account_id}"
