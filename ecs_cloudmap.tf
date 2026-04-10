@@ -48,3 +48,18 @@ resource "aws_service_discovery_service" "user" {
     routing_policy = "MULTIVALUE"
   }
 }
+
+resource "aws_service_discovery_service" "llm" {
+  name = "llm"
+
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.this.id
+
+    dns_records {
+      ttl  = 10
+      type = "A"
+    }
+
+    routing_policy = "MULTIVALUE"
+  }
+}
