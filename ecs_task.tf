@@ -171,3 +171,68 @@ resource "aws_ecs_task_definition" "user" {
     }
   ])
 }
+
+resource "aws_ecs_task_definition" "llm" {
+  family                   = "${var.name}-llm-${var.env}"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = "4096"
+  memory                   = "8192"
+
+  execution_role_arn = aws_iam_role.ecs_task_execution.arn
+
+  container_definitions = jsonencode([
+    {
+      name  = "llm"
+      image = var.llm_image
+      portMappings = [{
+        containerPort = 8080
+        protocol      = "tcp"
+      }]
+
+      essential = true
+
+      environment = [
+        { name = "OLLAMA_URL",   value = "http://localhost:11434/api/generate" },
+        { name = "OLLAMA_MODEL", value = "mistral" },
+        { name = "PORT",         value = "8080" }
+      ]
+
+      secrets = [
+        {
+          name      = "DB_USERNAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:username::"
+        },
+        {
+          name      = "DB_PASSWORD"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:password::"
+        },
+        {
+          name      = "DB_HOST"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:host::"
+        },
+        {
+          name      = "DB_PORT"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:port::"
+        },
+        {
+          name      = "DB_NAME"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:dbname::"
+        },
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.postgres.arn}:url::"
+        }
+      ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.ecs.name
+          awslogs-region        = var.aws_region
+          awslogs-stream-prefix = "llm"
+        }
+      }
+    }
+  ])
+}
