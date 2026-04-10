@@ -95,3 +95,8 @@ variable "cloudfront_invalidation_lambda_arn" {
   type    = string
   default = "arn:aws:lambda:ap-southeast-1:282793424364:function:cloudfront-invalidation"
 }
+
+variable "llm_image" {
+  type    = string
+  default = "keiyam/placeholder:85f6ecc"
+}
