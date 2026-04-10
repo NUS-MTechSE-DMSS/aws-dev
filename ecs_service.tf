@@ -94,3 +94,38 @@ resource "aws_ecs_service" "user" {
     ]
   }
 }
+
+resource "aws_ecs_service" "llm" {
+  name            = "${var.name}-llm-${var.env}"
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.llm.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  health_check_grace_period_seconds = 300
+
+  network_configuration {
+    subnets          = [aws_subnet.app_a.id, aws_subnet.app_b.id]
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.llm.arn
+    container_name   = "llm"
+    container_port   = 8080
+  }
+
+  # http://llm.${var.name}.internal:8080
+  service_registries {
+    registry_arn   = aws_service_discovery_service.llm.arn
+    container_name = "llm"
+  }
+
+  depends_on = [aws_lb_listener_rule.llm]
+  lifecycle {
+    ignore_changes = [
+      task_definition, # Harness manages
+    ]
+  }
+}
