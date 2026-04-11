@@ -85,6 +85,15 @@ output "ecs_services" {
       container_name = "user"
       port           = 8080
     }
+
+    llm = {
+      name           = aws_ecs_service.llm.name
+      arn            = aws_ecs_service.llm.arn
+      tg_arn         = aws_lb_target_group.llm.arn
+      path           = "/llm/*"
+      container_name = "llm"
+      port           = 8080
+    }
   }
 }
 
@@ -93,5 +102,6 @@ output "service_urls" {
     food       = "http://${aws_lb.app.dns_name}/food/"
     preference = "http://${aws_lb.app.dns_name}/preference/"
     user       = "http://${aws_lb.app.dns_name}/user/"
+    llm        = "http://${aws_lb.app.dns_name}/llm/"
   }
 }
