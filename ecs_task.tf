@@ -195,7 +195,8 @@ resource "aws_ecs_task_definition" "llm" {
       environment = [
         { name = "OLLAMA_URL", value = "http://localhost:11434/api/generate" },
         { name = "OLLAMA_MODEL", value = "mistral" },
-        { name = "PORT", value = "8080" }
+        { name = "PORT", value = "8080" },
+        { name = "OLLAMA_KEEP_ALIVE", value = "-1" }
       ]
 
       secrets = [
