@@ -11,6 +11,25 @@
 # 用 CloudFront 默认证书 (dXXXXX.cloudfront.net), 暂不绑自定义域名。
 # ============================================================================
 
+# CloudFront Function: 把以 / 结尾的子路径加上 index.html
+# 解决问题: default_root_object 只对根路径 / 有效，对 /staging/abc1234/ 无效
+# 没有这个 function，CloudFront 会找 staging/abc1234/ 这个 S3 对象 (不存在) → 403
+resource "aws_cloudfront_function" "swipe2eat_ui_rewrite" {
+  name    = "${var.name}-swipe2eat-ui-rewrite-${var.env}"
+  runtime = "cloudfront-js-2.0"
+  publish = true
+  code    = <<-EOT
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+      if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+      }
+      return request;
+    }
+  EOT
+}
+
 # OAC (Origin Access Control): 让 CloudFront 用 SigV4 签名访问 S3
 resource "aws_cloudfront_origin_access_control" "swipe2eat_ui_s3" {
   name                              = "${var.name}-swipe2eat-ui-s3-oac-${var.env}"
@@ -61,6 +80,11 @@ resource "aws_cloudfront_distribution" "swipe2eat_ui" {
 
     cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.swipe2eat_ui_rewrite.arn
+    }
   }
 
   # ------------------------ Backend API routes (→ ALB) ------------------------
