@@ -30,6 +30,13 @@ resource "aws_cloudfront_distribution" "app" {
     origin_access_control_id = aws_cloudfront_origin_access_control.public_s3.id
   }
 
+  # Origin 2: swipe2eat-ui S3 bucket（staging 子路径）
+  origin {
+    domain_name              = aws_s3_bucket.swipe2eat_ui.bucket_regional_domain_name
+    origin_id                = "swipe2eat-ui-s3-origin"
+    origin_access_control_id = aws_cloudfront_origin_access_control.swipe2eat_ui_s3.id
+  }
+
   origin {
     domain_name = var.origin_domain_name
     origin_id   = "alb-origin"
@@ -67,6 +74,25 @@ resource "aws_cloudfront_distribution" "app" {
   #     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
   #     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
   #   }
+
+  # /staging/* → swipe2eat-ui S3 bucket（URL rewrite: /staging/sha/ → /staging/sha/index.html）
+  ordered_cache_behavior {
+    path_pattern           = "/staging/*"
+    target_origin_id       = "swipe2eat-ui-s3-origin"
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    cached_methods  = ["GET", "HEAD"]
+
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.swipe2eat_ui_rewrite.arn
+    }
+  }
 
   ordered_cache_behavior {
     path_pattern           = "/food*"

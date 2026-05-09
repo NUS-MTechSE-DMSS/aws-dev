@@ -46,8 +46,11 @@ resource "aws_s3_bucket_policy" "swipe2eat_ui" {
       Action   = ["s3:GetObject"]
       Resource = "${aws_s3_bucket.swipe2eat_ui.arn}/*"
       Condition = {
-        StringEquals = {
-          "AWS:SourceArn" = aws_cloudfront_distribution.swipe2eat_ui.arn
+        StringLike = {
+          "AWS:SourceArn" = [
+            aws_cloudfront_distribution.swipe2eat_ui.arn,
+            aws_cloudfront_distribution.app.arn
+          ]
         }
       }
     }]
