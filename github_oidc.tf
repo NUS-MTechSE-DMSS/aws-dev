@@ -76,7 +76,6 @@ resource "aws_iam_role" "github_swipe2eat_ui_deploy" {
 #
 # 不允许:
 #   - 触碰 public bucket (admin-portal 的) 或 admin bucket
-#   - 触碰 admin-portal 的 CloudFront distribution (aws_cloudfront_distribution.app)
 #   - 删除 bucket / distribution 本身
 #   - 修改 bucket policy / distribution config
 # ----------------------------------------------------------------------------
@@ -113,7 +112,10 @@ resource "aws_iam_role_policy" "github_swipe2eat_ui_deploy" {
           "cloudfront:GetInvalidation",
           "cloudfront:ListInvalidations",
         ]
-        Resource = aws_cloudfront_distribution.swipe2eat_ui.arn
+        Resource = [
+          aws_cloudfront_distribution.swipe2eat_ui.arn,
+          aws_cloudfront_distribution.app.arn,
+        ]
       },
     ]
   })

@@ -94,6 +94,25 @@ resource "aws_cloudfront_distribution" "app" {
     }
   }
 
+  # /swipetoeat-portal/* → swipe2eat-ui S3 bucket（production 子路径）
+  ordered_cache_behavior {
+    path_pattern           = "/swipetoeat-portal/*"
+    target_origin_id       = "swipe2eat-ui-s3-origin"
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    cached_methods  = ["GET", "HEAD"]
+
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.swipe2eat_ui_rewrite.arn
+    }
+  }
+
   ordered_cache_behavior {
     path_pattern           = "/food*"
     target_origin_id       = "alb-origin"
