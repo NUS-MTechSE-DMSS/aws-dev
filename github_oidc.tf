@@ -71,13 +71,14 @@ resource "aws_iam_role" "github_swipe2eat_ui_deploy" {
 
 # ----------------------------------------------------------------------------
 # Inline Policy: 最小权限
-#   - S3: 仅 public bucket 的对象读写
-#   - CloudFront: 仅本 distribution 的缓存刷新
+#   - S3: 仅 swipe2eat-ui bucket 的对象读写 (跟 admin-portal 的 public bucket 完全隔离)
+#   - CloudFront: 仅 swipe2eat-ui distribution 的缓存刷新
 #
 # 不允许:
+#   - 触碰 public bucket (admin-portal 的) 或 admin bucket
+#   - 触碰 admin-portal 的 CloudFront distribution (aws_cloudfront_distribution.app)
 #   - 删除 bucket / distribution 本身
 #   - 修改 bucket policy / distribution config
-#   - 触碰 admin bucket 或其他任何资源
 # ----------------------------------------------------------------------------
 resource "aws_iam_role_policy" "github_swipe2eat_ui_deploy" {
   name = "swipe2eat-ui-deploy-policy"
@@ -87,7 +88,7 @@ resource "aws_iam_role_policy" "github_swipe2eat_ui_deploy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "PublicBucketObjectReadWrite"
+        Sid    = "Swipe2eatUiBucketObjectReadWrite"
         Effect = "Allow"
         Action = [
           "s3:PutObject",
@@ -95,24 +96,24 @@ resource "aws_iam_role_policy" "github_swipe2eat_ui_deploy" {
           "s3:GetObject",
           "s3:DeleteObject",
         ]
-        Resource = "${aws_s3_bucket.public.arn}/*"
+        Resource = "${aws_s3_bucket.swipe2eat_ui.arn}/*"
       },
       {
         # `aws s3 sync` 需要 ListBucket 才能比对 source/destination
-        Sid      = "PublicBucketList"
+        Sid      = "Swipe2eatUiBucketList"
         Effect   = "Allow"
         Action   = ["s3:ListBucket"]
-        Resource = aws_s3_bucket.public.arn
+        Resource = aws_s3_bucket.swipe2eat_ui.arn
       },
       {
-        Sid    = "CloudFrontInvalidationOnly"
+        Sid    = "Swipe2eatUiCloudFrontInvalidationOnly"
         Effect = "Allow"
         Action = [
           "cloudfront:CreateInvalidation",
           "cloudfront:GetInvalidation",
           "cloudfront:ListInvalidations",
         ]
-        Resource = aws_cloudfront_distribution.app.arn
+        Resource = aws_cloudfront_distribution.swipe2eat_ui.arn
       },
     ]
   })
